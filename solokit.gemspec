@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Joakim Kolsjö"]
   s.email       = ["joakim.kolsjo@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{}
-  s.description = %q{}
+  s.summary     = %q{A toolkit for provisioning (ubuntu-)servers using chef-solo.}
+  s.description = %q{A toolkit for provisioning (ubuntu-)servers using chef-solo.}
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {spec}/*`.split("\n")
