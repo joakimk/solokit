@@ -16,7 +16,7 @@ An environment can be anything from one server to a staging cluster. Within an e
 
 For each layer, Solokit looks for a directory structure like this:
 
-    cookbooks/upstream # Unchanged cookbooks downloaded from opscode, or simular.
+    cookbooks/upstream # Unchanged cookbooks downloaded from opscode or other upstream source.
     cookbooks/site     # Changes or entierly new cookbooks for Solokit, your project or env.
     chef/solo.rb       # Specifies where to find files.
     chef/server.json   # Default config, just calls roles/base.rb.
@@ -50,7 +50,7 @@ Add user configuration to users.yml (optional, but you need to provide a chef/ro
     # User data used to setup user accounts using chef.
     # The hash is generated with "openssl passwd -1".
     
-    # Random PWgen password
+    # Random pwgen password that is used when you don't specify a password for a user.
     default_hash: $1$8jLGWmPB$yFGmUThzbL0DMarc1CIY1/
     
     groups:
@@ -59,7 +59,7 @@ Add user configuration to users.yml (optional, but you need to provide a chef/ro
     users:
       user:
         hash: $1$8jLGWmPB$yFGmUThzbL0DMarc1CIY1/
-        keys: jocke@keymaker
+        keys: user@computer
     
       ## -- Shared users --
       deploy:
@@ -69,6 +69,11 @@ Add user configuration to users.yml (optional, but you need to provide a chef/ro
       test:
         users: group/developers deploy
         sudo: group/developers
+
+And keys below "public_keys" that have names ending in ".pub".
+
+    mkdir -p public_keys
+    echo "your key" > public_keys/your_key@computer.pub
     
-By default this setup assumes that you can login to root on the server using your ssh key.
+By default this setup assumes that you can login to root on the server using your ssh key but the Chef class also supports running chef as a normal user.
 
