@@ -19,11 +19,12 @@ module Solokit
       @ssh.run("rm -rf #{root}etc/chef", false) &&
       upload_files("#{solokit_path}/cookbooks/upstream/", "#{root}var/chef-solo/upstream-cookbooks") &&
       upload_files("#{solokit_path}/cookbooks/site/", "#{root}var/chef-solo/site-cookbooks") &&
-      upload_files("cookbooks/upstream/", "#{root}var/chef-solo/upstream-cookbooks") &&
-      upload_files("cookbooks/site/", "#{root}var/chef-solo/site-cookbooks") &&
+      upload_files("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
+      upload_files("cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
       upload_files("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") &&
+      upload_files("#{solokit_path}/chef", "#{root}etc/chef") &&
       upload_files("chef/*", "#{root}etc/chef") &&
-      upload_files("envs/#{@env}/chef/", "#{root}etc/chef") 
+      upload_files("envs/#{@env}/chef/*", "#{root}etc/chef") 
     end
 
     def run(debug = false, root = "/")
@@ -49,7 +50,7 @@ module Solokit
     end
 
     def upload_files(from, to)
-      return true unless File.exists?(from)
+      return true unless File.exists?(from.gsub(/\*/, ''))
       @ssh.run("mkdir -p #{to}") && @ssh.rsync(from, to, true) 
     end
 
