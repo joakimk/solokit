@@ -18,6 +18,7 @@ module Solokit
     def upload(root = "/")
       solokit_path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
+      system("rm -rf #{TEMP_PATH}")
       add_upload("#{solokit_path}/cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
       add_upload("#{solokit_path}/cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
       add_upload("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
