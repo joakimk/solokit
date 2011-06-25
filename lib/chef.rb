@@ -22,7 +22,7 @@ module Solokit
       upload_files("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
       upload_files("cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
       upload_files("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") &&
-      upload_files("#{solokit_path}/chef*", "#{root}etc/chef") &&
+      upload_files("#{solokit_path}/chef/*", "#{root}etc/chef") &&
       upload_files("chef/*", "#{root}etc/chef") &&
       upload_files("envs/#{@env}/chef/*", "#{root}etc/chef") 
     end
