@@ -14,15 +14,16 @@ module Solokit
     end
 
     def upload(root = "/")
+      solokit_path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
       @ssh.run("rm -rf #{root}var/chef-solo", false) &&
-        @ssh.run("rm -rf #{root}etc/chef", false) &&
-        upload_files("cookbooks/upstream/", "#{root}var/chef-solo/upstream-cookbooks") &&
-        upload_files("cookbooks/site/", "#{root}var/chef-solo/site-cookbooks") &&
-        (File.exists?("envs/#{@env}/cookbooks") ? 
-         upload_files("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") :
-         true) &&
-           upload_files("chef/*", "#{root}etc/chef") &&
-           upload_files("envs/#{@env}/chef/", "#{root}etc/chef") 
+      @ssh.run("rm -rf #{root}etc/chef", false) &&
+      upload_files("#{solokit_path}/cookbooks/upstream/", "#{root}var/chef-solo/upstream-cookbooks") &&
+      upload_files("#{solokit_path}/cookbooks/site/", "#{root}var/chef-solo/site-cookbooks") &&
+      upload_files("cookbooks/upstream/", "#{root}var/chef-solo/upstream-cookbooks") &&
+      upload_files("cookbooks/site/", "#{root}var/chef-solo/site-cookbooks") &&
+      upload_files("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") &&
+      upload_files("chef/*", "#{root}etc/chef") &&
+      upload_files("envs/#{@env}/chef/", "#{root}etc/chef") 
     end
 
     def run(debug = false, root = "/")
@@ -48,8 +49,8 @@ module Solokit
     end
 
     def upload_files(from, to)
-      @ssh.run("mkdir -p #{to}") &&
-        @ssh.rsync(from, to, true) 
+      return true unless File.exists?(from)
+      @ssh.run("mkdir -p #{to}") && @ssh.rsync(from, to, true) 
     end
 
     def installed?
