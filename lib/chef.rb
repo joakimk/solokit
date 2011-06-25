@@ -17,12 +17,12 @@ module Solokit
       solokit_path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
       @ssh.run("rm -rf #{root}var/chef-solo", false) &&
       @ssh.run("rm -rf #{root}etc/chef", false) &&
-      upload_files("#{solokit_path}/cookbooks/upstream/", "#{root}var/chef-solo/upstream-cookbooks") &&
-      upload_files("#{solokit_path}/cookbooks/site/", "#{root}var/chef-solo/site-cookbooks") &&
+      upload_files("#{solokit_path}/cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
+      upload_files("#{solokit_path}/cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
       upload_files("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
       upload_files("cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
       upload_files("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") &&
-      upload_files("#{solokit_path}/chef", "#{root}etc/chef") &&
+      upload_files("#{solokit_path}/chef*", "#{root}etc/chef") &&
       upload_files("chef/*", "#{root}etc/chef") &&
       upload_files("envs/#{@env}/chef/*", "#{root}etc/chef") 
     end
