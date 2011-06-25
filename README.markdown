@@ -12,7 +12,7 @@ Cookbooks and configuration
 
 Solokit includes some defaults so that you don't have to repeat the same things for each server. Any "cookbook" or "chef" directories in the root of your project will be copied over the defaults. The same goes for any "cookbook" or "chef" directories for a specific environment.
 
-An environment can be anything from one server to a staging cluster. Within an environment you can run specific configuration for each server, but Solokit defaults to "server.json".
+An environment can be anything from one server to a complete cluster. Within an environment you can run specific configuration for each server, but Solokit defaults to "server.json".
 
 For each layer, Solokit looks for a directory structure like this:
 
