@@ -3,7 +3,10 @@ require 'ostruct'
 module Solokit
   class Configuration < OpenStruct
     def initialize(*envs)
-      shared_config = YAML.load_file("config.yml")
+      shared_config = { "debug_ssh" => false, "debug_chef" => false }
+      if File.exists?("config.yml")
+        shared_config = YAML.load_file("config.yml").merge(shared_config)
+      end
 
       config = shared_config
       envs.each do |env|

@@ -25,5 +25,50 @@ For each layer, Solokit looks for a directory structure like this:
 Usage
 ---
 
-TBD
+Create the basic directory structure:
+
+    mkdir project
+    cd project
+    mkdir -p envs/test/chef/roles
+    
+
+Add something like this to a Rakefile:
+
+    require 'rubygems'
+    require 'solokit'
+    
+    namespace :test do
+      desc "Update system configuration"
+      task :provision do
+        Solokit::UserJsonGenerator.generate! "test"
+        Solokit::Chef.provision!("test", "test.example.com", Solokit::Configuration.new("test"))
+      end
+    end
+
+Add user configuration to users.yml (optional, but you need to provide a chef/roles/base.json without the users role if you skip this step):
+
+    # User data used to setup user accounts using chef.
+    # The hash is generated with "openssl passwd -1".
+    
+    # Random PWgen password
+    default_hash: $1$8jLGWmPB$yFGmUThzbL0DMarc1CIY1/
+    
+    groups:
+      developers: user
+    
+    users:
+      user:
+        hash: $1$8jLGWmPB$yFGmUThzbL0DMarc1CIY1/
+        keys: jocke@keymaker
+    
+      ## -- Shared users --
+      deploy:
+        keys: group/developers 
+     
+    envs:
+      test:
+        users: group/developers deploy
+        sudo: group/developers
+    
+By default this setup assumes that you can login to root on the server using your ssh key.
 
