@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'ssh.rb'))
 
 module Solokit
   class Chef
-    TEMP_PATH="/tmp/solokit_upload.#{Process.pid}"
+    TEMP_PATH="/tmp/solokit_upload"
 
     def initialize(ip, name, env, debug_ssh, user = 'root')
       @ip, @name, @env = ip, name, env
