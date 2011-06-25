@@ -4,7 +4,7 @@ require "solokit/version"
 
 Gem::Specification.new do |s|
   s.name        = "solokit"
-  s.version     = Solo::VERSION
+  s.version     = Solokit::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joakim Kolsjö"]
   s.email       = ["joakim.kolsjo@gmail.com"]
