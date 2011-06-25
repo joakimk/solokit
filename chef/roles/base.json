@@ -1,0 +1,13 @@
+{
+  "name": "Base",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "override_attributes": {
+    // "tz": "Europe/Stockholm"
+  },
+  "run_list": [
+    "recipe[apt]",
+    "role[users]"
+  ]
+}
+
