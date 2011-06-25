@@ -2,6 +2,8 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'ssh.rb'))
 
 module Solokit
   class Chef
+    TEMP_PATH="/tmp/solokit_upload"
+
     def initialize(ip, name, env, debug_ssh, user = 'root')
       @ip, @name, @env = ip, name, env
       @ssh = SSH.new(ip, user, debug_ssh)
@@ -15,16 +17,17 @@ module Solokit
 
     def upload(root = "/")
       solokit_path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-      @ssh.run("rm -rf #{root}var/chef-solo", false) &&
-      @ssh.run("rm -rf #{root}etc/chef", false) &&
-      upload_files("#{solokit_path}/cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
-      upload_files("#{solokit_path}/cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
-      upload_files("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
-      upload_files("cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
-      upload_files("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") &&
-      upload_files("#{solokit_path}/chef/*", "#{root}etc/chef") &&
-      upload_files("chef/*", "#{root}etc/chef") &&
-      upload_files("envs/#{@env}/chef/*", "#{root}etc/chef") 
+
+      add_upload("#{solokit_path}/cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
+      add_upload("#{solokit_path}/cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
+      add_upload("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
+      add_upload("cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
+      add_upload("envs/#{@env}/cookbooks/*", "#{root}var/chef-solo/site-cookbooks") &&
+      add_upload("#{solokit_path}/chef/*", "#{root}etc/chef") &&
+      add_upload("chef/*", "#{root}etc/chef") &&
+      add_upload("envs/#{@env}/chef/*", "#{root}etc/chef") &&
+      @ssh.run("rm -rf #{root}var/chef-solo #{root}etc/chef", false) &&
+      @ssh.rsync("#{TEMP_PATH}#{root}", root, true) 
     end
 
     def run(debug = false, root = "/")
@@ -49,9 +52,12 @@ module Solokit
       "PATH=\"#{root}ruby/bin:/sbin:$PATH\""
     end
 
-    def upload_files(from, to)
-      return true unless File.exists?(from.gsub(/\*/, ''))
-      @ssh.run("mkdir -p #{to}") && @ssh.rsync(from, to, true) 
+    def add_upload(from, to)
+      if File.exists?(from.gsub(/\*/, ''))
+        system("mkdir -p #{TEMP_PATH}#{to} && cp -rf #{from} /tmp/solokit_upload#{to}")
+      else
+        true
+      end
     end
 
     def installed?
@@ -59,3 +65,4 @@ module Solokit
     end
   end
 end
+

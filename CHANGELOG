@@ -1,0 +1,4 @@
+0.0.7
+
+Major speed improvment by reducing the number of ssh logins.
+
