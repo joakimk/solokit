@@ -61,7 +61,7 @@ Add user configuration to users.yml (optional, but you need to provide a chef/ro
         hash: $1$8jLGWmPB$yFGmUThzbL0DMarc1CIY1/
         keys: user@computer
     
-      ## -- Shared users --
+      ## Shared users
       deploy:
         keys: group/developers 
      
@@ -70,7 +70,7 @@ Add user configuration to users.yml (optional, but you need to provide a chef/ro
         users: group/developers deploy
         sudo: group/developers
 
-And keys below "public_keys" that have names ending in ".pub".
+Add keys below "public_keys" that have names ending in ".pub".
 
     mkdir -p public_keys
     echo "your key" > public_keys/your_key@computer.pub
