@@ -2,8 +2,6 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'ssh.rb'))
 
 module Solokit
   class Chef
-    TEMP_PATH="/tmp/solokit_upload"
-
     def initialize(ip, name, env, debug_ssh, user = 'root')
       @ip, @name, @env = ip, name, env
       @ssh = SSH.new(ip, user, debug_ssh)
@@ -18,7 +16,7 @@ module Solokit
     def upload(root = "/")
       solokit_path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
-      system("rm -rf #{TEMP_PATH}")
+      system("rm -rf #{temp_path}")
       add_upload("#{solokit_path}/cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
       add_upload("#{solokit_path}/cookbooks/site/*", "#{root}var/chef-solo/site-cookbooks") &&
       add_upload("cookbooks/upstream/*", "#{root}var/chef-solo/upstream-cookbooks") &&
@@ -28,7 +26,8 @@ module Solokit
       add_upload("chef/*", "#{root}etc/chef") &&
       add_upload("envs/#{@env}/chef/*", "#{root}etc/chef") &&
       @ssh.run("rm -rf #{root}var/chef-solo #{root}etc/chef", false) &&
-      @ssh.rsync("#{TEMP_PATH}#{root}", root, true) 
+      @ssh.rsync("#{temp_path}#{root}", root, true) &&
+      system("rm -rf #{temp_path}")
     end
 
     def run(debug = false, root = "/")
@@ -49,13 +48,17 @@ module Solokit
 
     private
 
+    def temp_path
+      "/tmp/solokit_upload/#{@env}-#{@name}-#{@ip}"
+    end
+
     def custom_ruby_path(root)
       "PATH=\"#{root}ruby/bin:/sbin:$PATH\""
     end
 
     def add_upload(from, to)
       if File.exists?(from.gsub(/\*/, ''))
-        system("mkdir -p #{TEMP_PATH}#{to} && cp -rf #{from} /tmp/solokit_upload#{to}")
+        system("mkdir -p #{temp_path}#{to} && cp -rf #{from} #{temp_path}#{to}")
       else
         true
       end
