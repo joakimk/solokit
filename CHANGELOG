@@ -1,3 +1,8 @@
+0.1.5
+
+Added "reverse_rsync" on the SSH class so that you can download files from
+servers.
+
 0.1.4
 
 Using different temp folders for each server so that you can run provisoning in parallel.

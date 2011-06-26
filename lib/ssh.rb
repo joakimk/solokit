@@ -12,6 +12,10 @@ module Solokit
       run_command("rsync -e 'ssh #{ssh_opts}' -az #{source} #{@user}@#{@ip}:#{target} #{supress_output(quiet)}")
     end
 
+    def reverse_rsync(source, target, quiet = false)
+      run_command("rsync -e 'ssh #{ssh_opts}' -az #{@user}@#{@ip}:#{source} #{target} #{supress_output(quiet)}")
+    end
+
     private
 
     def supress_output(hide_stdout)
