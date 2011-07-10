@@ -3,7 +3,7 @@ A toolkit for provisioning (ubuntu-)servers using chef-solo.
 Solokit
 ---
 
-* A set of wrappers around SSH and Chef Solo. 
+* A set of wrappers around SSH and Chef Solo for getting cookbooks and recipes to servers and running them.
 * Code for setting up user accounts (optionally setting passwords, ssh-keys and sudo access).
 * Uses nesting to override configuration and cookbooks.
 
@@ -14,13 +14,15 @@ Solokit includes some defaults so that you don't have to repeat the same things 
 
 An environment can be anything from one server to a complete cluster. Within an environment you can run specific configuration for each server, but Solokit defaults to "server.json".
 
-For each layer, Solokit looks for a directory structure like this:
+For each layer*, Solokit looks for a directory structure like this:
 
     cookbooks/upstream # Unchanged cookbooks downloaded from opscode or other upstream source.
     cookbooks/site     # Changes or entierly new cookbooks for Solokit, your project or env.
     chef/solo.rb       # Specifies where chef solo should look for files.
     chef/server.json   # Default config, just calls roles/base.rb.
     chef/roles/base.rb # Base configuration
+
+*Except for within an environment where all cookbooks are considered site-cookbooks (example path: envs/test/cookbooks).
 
 Usage
 ---
@@ -73,7 +75,7 @@ Add user configuration to users.yml (optional, but you need to provide a chef/ro
 Add keys below "public_keys" that have names ending in ".pub".
 
     mkdir -p public_keys
-    echo "your key" > public_keys/your_key@computer.pub
+    echo "your key" > public_keys/user@computer.pub
     
 By default this setup assumes that you can login to root on the server using your ssh key but Solokit also supports running chef as a normal user (with some modifications to solo.rb).
 
