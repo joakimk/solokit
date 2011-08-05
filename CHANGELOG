@@ -1,7 +1,10 @@
+0.1.6
+
+Fixed stalled chef installation on Ubuntu 10.04.
+
 0.1.5
 
-Added "reverse_rsync" on the SSH class so that you can download files from
-servers.
+Added "reverse_rsync" on the SSH class so that you can download files from servers.
 
 0.1.4
 
