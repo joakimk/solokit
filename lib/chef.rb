@@ -7,10 +7,11 @@ module Solokit
       @ssh = SSH.new(ip, user, debug_ssh)
     end
 
-    def install
+    def install(use_old_config = false)
       return true if installed?
       puts "#{@name} (#{@env}): Installing chef..."
-      @ssh.run('export DEBIAN_FRONTEND=noninteractive; apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confnew" && apt-get install -o Dpkg::Options::="--force-confnew" ruby ruby1.8-dev libopenssl-ruby wget rsync build-essential -y && wget http://production.cf.rubygems.org/rubygems/rubygems-1.3.7.tgz && tar xfz rubygems-1.3.7.tgz && cd rubygems-1.3.7 && ruby setup.rb && cd .. && rm -rf rubygems-1.3.7* && ln -s /usr/bin/gem1.8 /usr/bin/gem && gem install chef ohai --no-ri --no-rdoc')
+      dpkg_options = use_old_config ? '--force-confold' : '--force-confnew'
+      @ssh.run(%{export DEBIAN_FRONTEND=noninteractive; apt-get update && apt-get upgrade -y -o Dpkg::Options::="#{dpkg_options}" && apt-get install -o Dpkg::Options::="#{dpkg_options}" ruby ruby1.8-dev libopenssl-ruby wget rsync build-essential -y && wget http://production.cf.rubygems.org/rubygems/rubygems-1.3.7.tgz && tar xfz rubygems-1.3.7.tgz && cd rubygems-1.3.7 && ruby setup.rb && cd .. && rm -rf rubygems-1.3.7* && ln -s /usr/bin/gem1.8 /usr/bin/gem && gem install chef ohai --no-ri --no-rdoc})
     end
 
     def upload(root = "/")

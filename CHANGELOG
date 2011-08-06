@@ -1,3 +1,7 @@
+0.1.7
+
+Support selecting the old version of configs when running apt-get upgrade.
+
 0.1.6
 
 Fixed stalled chef installation on Ubuntu 10.04.
