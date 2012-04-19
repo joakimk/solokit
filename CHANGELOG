@@ -1,3 +1,7 @@
+0.1.8
+
+Support for a "home" option for each user. Will now create a group for each user if its missing.
+
 0.1.7
 
 Support selecting the old version of configs when running apt-get upgrade.

@@ -4,6 +4,9 @@ if node[:users]
 
   node[:users].keys.each do |username|
     config = node[:users][username]
+
+    group username do
+    end
     user username do
       comment config[:comment]
 

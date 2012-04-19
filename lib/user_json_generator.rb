@@ -41,7 +41,7 @@ module Solokit
         :users => env_users.inject({}) { |h, user|
         h[user] = {
           :password => (@users[user] || {})["hash"] || @default_hash,
-          :home => (user == 'root' ? '/root' : [ @opts[:home], user ].join('/')),
+          :home => @users[user]["home"] || (user == 'root' ? '/root' : [ @opts[:home], user ].join('/')),
           :hidden_home => !!(@users[user] || {})["hidden_home"]
         }; h
       },
