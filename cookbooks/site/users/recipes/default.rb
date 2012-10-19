@@ -9,6 +9,7 @@ if node[:users]
     end
     user username do
       comment config[:comment]
+      gid username
 
       # Added config for home in this site specific cookbook:
       if config[:home]
