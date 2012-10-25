@@ -58,11 +58,26 @@ module Solokit
     end
 
     def env_users
-      resolve_users(@env["users"].split)
+      resolve_users_for("users")
     end
 
     def env_sudo_users
-      @env["sudo"] && resolve_users(@env["sudo"].split)
+      users = []
+
+      users << resolve_users_for("sudo").map { |user|
+        { name: user }
+      }
+
+      users << resolve_users_for("sudo_without_password").map do |user|
+        { name: user, can_sudo_without_password: true }
+      end
+
+      users.flatten
+    end
+
+    def resolve_users_for(key)
+      str = @env[key]
+      str && resolve_users(str.split) || []
     end
 
     def resolve_users(list)
