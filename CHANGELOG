@@ -1,3 +1,7 @@
+0.1.10
+
+Added support for allwoing users to sudo without a password.
+
 0.1.9
 
 Bug with adding users fixed by @tskogberg.
