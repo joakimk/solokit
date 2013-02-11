@@ -1,1 +1,0 @@
-set_unless[:ruby_shadow][:site_ruby] = "/usr/local/lib/ruby/site_ruby/1.8"
