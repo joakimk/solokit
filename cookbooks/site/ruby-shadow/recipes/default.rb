@@ -1,4 +1,4 @@
-site_ruby = "/usr/local/lib/ruby/site_ruby/1.8"
+site_ruby = node[:ruby_shadow][:site_ruby] || "/usr/lib/ruby/site_ruby/1.8"
 
 remote_directory "/usr/local/src/shadow-1.4.1" do
   source 'shadow-1.4.1'
