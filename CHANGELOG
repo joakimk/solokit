@@ -1,3 +1,7 @@
+0.1.14
+
+Fixed deprication messages and some other things.
+
 0.1.10
 
 Added support for allwoing users to sudo without a password.
