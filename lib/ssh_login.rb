@@ -6,8 +6,8 @@ module Solokit
       @ssh = SSH.new(ip, user, debug_ssh)
     end
 
-    def upload(path)
-      @ssh.rsync("#{temp_path}#{root}", root, true)
+    def upload(source, target)
+      @ssh.rsync(source, target, true)
     end
 
     def run(command)
