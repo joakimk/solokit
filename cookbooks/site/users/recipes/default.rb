@@ -2,7 +2,10 @@ include_recipe "ruby-shadow"
 
 if node[:users]
 
-  node[:users].keys.each do |username|
+  # We still run ruby 1.8 for some chef things and hash key order
+  # is not deterministic. Because of this we sort the keys so that
+  # users are created in the same order every time.
+  node[:users].keys.sort.each do |username|
     config = node[:users][username]
 
     group username do
@@ -24,15 +27,15 @@ if node[:users]
         home_path = "/home/#{username}"
         home home_path
       end
-      
+
       Kernel.system "chmod 700 #{home_path}" if config[:hidden_home]
-      
+
       shell "/bin/bash"
       password config[:password]
       supports :manage_home => true
       action [:create, :manage]
-    end  
-    
+    end
+
     add_keys username
   end
 end
