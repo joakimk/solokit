@@ -1,3 +1,7 @@
+### Note: This project is not maintained anymore.
+
+---
+
 A toolkit for provisioning (ubuntu-)servers using chef-solo.
 
 Solokit
